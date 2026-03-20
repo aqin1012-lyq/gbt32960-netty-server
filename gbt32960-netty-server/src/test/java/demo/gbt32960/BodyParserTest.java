@@ -20,5 +20,18 @@ class BodyParserTest {
         assertTrue(json.contains("realtime_report"));
         assertTrue(json.contains("vehicle_data"));
         assertTrue(json.contains("alarm_data"));
+        assertTrue(json.contains("compatibility-skeleton"));
+        assertTrue(json.contains("thermalRunawayActive"));
+    }
+
+    @Test
+    void shouldParseLoginBodyWithMetadata() {
+        byte[] body = Gbt32960Protocol.buildDemoLoginBody();
+        Packet32960 packet = new Packet32960(0x01, 0xFE, "LJ8ABC12345678901", 0x01, body.length, body, 0);
+        BodyParser parser = new BodyParser();
+        String json = parser.parse(packet).toPrettyJson();
+        assertTrue(json.contains("vehicle_login"));
+        assertTrue(json.contains("protocolFamily"));
+        assertTrue(json.contains("placeholder"));
     }
 }
